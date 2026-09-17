@@ -1,0 +1,9 @@
+[package]
+org = "madusha"
+name = "claims_api"
+version = "0.1.0"
+distribution = "2201.13.6"
+title = "Claims API"
+
+[build-options]
+sticky = true

@@ -1,0 +1,117 @@
+{
+  "last_build_time": 1789637709893,
+  "last_update_time": 1789637709893,
+  "last_bal_toml_update_time": 1789635653294,
+  "distribution_version": "2201.13.6",
+  "last_modified_time": {
+    "claims_rag": 1789636024929
+  },
+  "last_build_options": {
+    "testReport": false,
+    "codeCoverage": false,
+    "skipTests": true,
+    "compilationOptions": {
+      "experimental": false,
+      "cloud": "",
+      "sticky": true,
+      "dumpGraph": false,
+      "dumpRawGraphs": false,
+      "lockingMode": "HARD"
+    }
+  },
+  "src_meta_info": [
+    {
+      "file": "/Users/madusha/WSO2Integrator/testing_hackathon_0917/claims_rag/main.bal",
+      "hash": "7e8512ec2942eb55005c7240a7251181d6dbb04a48a89369eb3f9531f1871926",
+      "size": 522,
+      "lastModifiedTime": 1789635943386
+    },
+    {
+      "file": "/Users/madusha/WSO2Integrator/testing_hackathon_0917/claims_rag/functions.bal",
+      "hash": "d368f21ba1de0c6a146abfc49cd9c874a1036d1c7060ecab25079fb472e91bc7",
+      "size": 1585,
+      "lastModifiedTime": 1789636024929
+    },
+    {
+      "file": "/Users/madusha/WSO2Integrator/testing_hackathon_0917/claims_rag/config.bal",
+      "hash": "b4c80a0badeeeb1e62af3ded20e87bda1e7fe8266054f7217f752a62bd7fc4a6",
+      "size": 293,
+      "lastModifiedTime": 1789635695434
+    },
+    {
+      "file": "/Users/madusha/WSO2Integrator/testing_hackathon_0917/claims_rag/connections.bal",
+      "hash": "09705ad4dcc4cd3345cf3daef257f8ee6f5d7e4ae482b693502c8e5eebecb60e",
+      "size": 796,
+      "lastModifiedTime": 1789635786713
+    },
+    {
+      "file": "/Users/madusha/WSO2Integrator/testing_hackathon_0917/claims_rag/Ballerina.toml",
+      "hash": "f7b5d5e4a8b969b6a125c21c93693e623b547c45722ec490d218207366abd05e",
+      "size": 143,
+      "lastModifiedTime": 1789635653294
+    },
+    {
+      "file": "/Users/madusha/WSO2Integrator/testing_hackathon_0917/claims_rag/data_mappings.bal",
+      "hash": "39519cc5082c84068dc2bc36445e07d7372defaf91b34184fc1618effcbd2fae",
+      "size": 3661,
+      "lastModifiedTime": 1789635986458
+    },
+    {
+      "file": "/Users/madusha/WSO2Integrator/testing_hackathon_0917/claims_rag/types.bal",
+      "hash": "26f2f51ab8737cebd2a771b3500fcaddc40bb1d1ef4431e8da37dc56ceb173f1",
+      "size": 385,
+      "lastModifiedTime": 1789635963920
+    }
+  ],
+  "target_exec_meta_info": {
+    "file": "/Users/madusha/WSO2Integrator/testing_hackathon_0917/claims_rag/target/backup/bin/claims_rag.jar",
+    "hash": "6cb901a1b66e368e2e55a4b25b02b31f60913a510e099645fcd4c13a8bdea6c8",
+    "size": 88247400,
+    "lastModifiedTime": 1789637711907
+  },
+  "settings_meta_info": {
+    "file": "/Users/madusha/.ballerina/Settings.toml",
+    "hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "size": 0,
+    "lastModifiedTime": 1781167980195
+  },
+  "ballerina_toml_meta_info": {
+    "file": "/Users/madusha/WSO2Integrator/testing_hackathon_0917/claims_rag/Ballerina.toml",
+    "hash": "f7b5d5e4a8b969b6a125c21c93693e623b547c45722ec490d218207366abd05e",
+    "size": 143,
+    "lastModifiedTime": 1789635653294
+  },
+  "resources_dir_meta_info": [
+    {
+      "file": "/Users/madusha/WSO2Integrator/testing_hackathon_0917/claims_rag/resources/rag_documents/POL-1001-MOTOR-COVERAGE.md",
+      "hash": "94e7aacdb94c119b738634e9e1ba91dce74b1e37b320c7732cb412b56aa18635",
+      "size": 417,
+      "lastModifiedTime": 1789635663042
+    },
+    {
+      "file": "/Users/madusha/WSO2Integrator/testing_hackathon_0917/claims_rag/resources/rag_documents/motor-coverage-guide.md",
+      "hash": "1350f01ef48fc124beec13726f5a39a88aafb3b58cbfc392ccd3b6cbeb879c25",
+      "size": 819,
+      "lastModifiedTime": 1789635668700
+    },
+    {
+      "file": "/Users/madusha/WSO2Integrator/testing_hackathon_0917/claims_rag/resources/rag_documents/claims-process-faq.md",
+      "hash": "d0b210c5d68dac5af95976756be24e20feecc45a48f6677f22b1f08670da29b3",
+      "size": 802,
+      "lastModifiedTime": 1789635684334
+    },
+    {
+      "file": "/Users/madusha/WSO2Integrator/testing_hackathon_0917/claims_rag/resources/rag_documents/motor-exclusions.md",
+      "hash": "7f2e3c2702993b8aa6da0d0acff9ee3eb726cf7909541998d08baffdac530ef5",
+      "size": 671,
+      "lastModifiedTime": 1789635678056
+    }
+  ],
+  "imports": [
+    "ballerina/data.yaml",
+    "ballerina/lang.regexp",
+    "ballerina/ai",
+    "ballerina/file",
+    "ballerina/io"
+  ]
+}
