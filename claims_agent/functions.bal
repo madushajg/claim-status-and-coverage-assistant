@@ -40,20 +40,38 @@ isolated function verifiedCustomerId(ai:Context ctx) returns string|error {
 // Extracts the first text content block from an MCP tool call result, or
 // the structured content when present, as a JSON value ready to convert
 // into a typed record.
+//
+// When the tool call itself failed (isError: true), the underlying MCP
+// tool's error message (e.g. the consistent "Access denied." wording used
+// by the Claims MCP server's authorization checks) is preserved verbatim
+// in the returned error, rather than being replaced with a generic
+// message - this keeps the authorization refusal wording consistent all
+// the way from the Claims API through to the agent's response.
 isolated function extractToolResultJson(mcp:CallToolResult result) returns json|error {
     if result.isError == true {
-        return error("The claims tool reported an error.");
+        string errorMessage = firstTextContent(result.content) ?: "Access denied.";
+        return error(errorMessage);
     }
     map<anydata>? structuredContent = result.structuredContent;
     if structuredContent is map<anydata> {
         return structuredContent.toJson();
     }
-    foreach mcp:ContentBlock contentBlock in result.content {
-        if contentBlock is mcp:TextContent {
-            return check contentBlock.text.fromJsonString();
-        }
+    string? textContent = firstTextContent(result.content);
+    if textContent is string {
+        return check textContent.fromJsonString();
     }
     return error("The claims tool returned no readable content.");
+}
+
+// Returns the text of the first text content block in the given content
+// array, or () when there is none.
+isolated function firstTextContent(mcp:ContentBlock[] content) returns string? {
+    foreach mcp:ContentBlock contentBlock in content {
+        if contentBlock is mcp:TextContent {
+            return contentBlock.text;
+        }
+    }
+    return ();
 }
 
 // Calls the getClaimStatus tool on the Claims MCP server, injecting the

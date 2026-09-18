@@ -103,17 +103,6 @@ dependencies = [
 
 [[package]]
 org = "ballerina"
-name = "data.yaml"
-version = "0.8.0"
-dependencies = [
-	{org = "ballerina", name = "jballerina.java"}
-]
-modules = [
-	{org = "ballerina", packageName = "data.yaml", moduleName = "data.yaml"}
-]
-
-[[package]]
-org = "ballerina"
 name = "file"
 version = "1.13.1"
 dependencies = [
@@ -121,9 +110,6 @@ dependencies = [
 	{org = "ballerina", name = "jballerina.java"},
 	{org = "ballerina", name = "os"},
 	{org = "ballerina", name = "time"}
-]
-modules = [
-	{org = "ballerina", packageName = "file", moduleName = "file"}
 ]
 
 [[package]]
@@ -166,9 +152,6 @@ version = "1.8.1"
 dependencies = [
 	{org = "ballerina", name = "jballerina.java"},
 	{org = "ballerina", name = "lang.value"}
-]
-modules = [
-	{org = "ballerina", packageName = "io", moduleName = "io"}
 ]
 
 [[package]]
@@ -239,9 +222,6 @@ version = "0.0.0"
 dependencies = [
 	{org = "ballerina", name = "jballerina.java"}
 ]
-modules = [
-	{org = "ballerina", packageName = "lang.regexp", moduleName = "lang.regexp"}
-]
 
 [[package]]
 org = "ballerina"
@@ -278,9 +258,6 @@ dependencies = [
 	{org = "ballerina", name = "lang.value"},
 	{org = "ballerina", name = "observe"}
 ]
-modules = [
-	{org = "ballerina", packageName = "log", moduleName = "log"}
-]
 
 [[package]]
 org = "ballerina"
@@ -296,6 +273,9 @@ dependencies = [
 	{org = "ballerina", name = "jballerina.java"},
 	{org = "ballerina", name = "log"},
 	{org = "ballerina", name = "uuid"}
+]
+modules = [
+	{org = "ballerina", packageName = "mcp", moduleName = "mcp"}
 ]
 
 [[package]]
@@ -399,18 +379,14 @@ dependencies = [
 
 [[package]]
 org = "madusha"
-name = "claims_rag"
+name = "claims_agent"
 version = "0.1.0"
 dependencies = [
 	{org = "ballerina", name = "ai"},
-	{org = "ballerina", name = "data.yaml"},
-	{org = "ballerina", name = "file"},
 	{org = "ballerina", name = "http"},
-	{org = "ballerina", name = "io"},
-	{org = "ballerina", name = "lang.regexp"},
-	{org = "ballerina", name = "log"}
+	{org = "ballerina", name = "mcp"}
 ]
 modules = [
-	{org = "madusha", packageName = "claims_rag", moduleName = "claims_rag"}
+	{org = "madusha", packageName = "claims_agent", moduleName = "claims_agent"}
 ]
 
