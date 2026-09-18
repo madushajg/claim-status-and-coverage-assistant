@@ -1,0 +1,9 @@
+[package]
+org = "madusha"
+name = "claims_mcp"
+version = "0.1.0"
+distribution = "2201.13.6"
+title = "Claims MCP"
+
+[build-options]
+sticky = true

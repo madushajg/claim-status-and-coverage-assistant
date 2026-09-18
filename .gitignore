@@ -1,3 +1,4 @@
 config.toml
 *.jar
 *.bir
+target/

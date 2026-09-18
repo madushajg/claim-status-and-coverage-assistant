@@ -1,23 +1,24 @@
-import ballerina/io;
+import ballerina/http;
+import ballerina/log;
 
-// Ingests the local Markdown policy knowledge documents into the in-memory
-// vector knowledge base, then answers a set of sample coverage questions
-// to demonstrate the RAG query function end-to-end. The knowledge base is
-// in-memory, so ingestion and querying must happen within the same run.
-public function main() returns error? {
-    int ingestedCount = check ingestPolicyDocuments(ragDocumentsPath);
-    io:println(string `Ingested ${ingestedCount} policy document(s) into the claims knowledge base.`);
+// HTTP listener port for the Claims RAG query service.
+configurable int ragServicePort = 8081;
 
-    CoverageQuestion[] sampleQuestions = [
-        {question: "Does policy POL-1001 cover windshield replacement?", policyNumber: "POL-1001"},
-        {question: "Which policy clause supports that answer?", policyNumber: "POL-1001"},
-        {question: "Does policy POL-1001 cover damage caused by an earthquake?", policyNumber: "POL-1001"}
-    ];
+// POST /coverage/questions
+// Answers a coverage/policy question using retrieval-augmented generation
+// against the local policy knowledge base populated at service startup.
+service /coverage on new http:Listener(ragServicePort) {
 
-    foreach CoverageQuestion sampleQuestion in sampleQuestions {
-        CoverageAnswer coverageAnswer = check answerCoverageQuestion(sampleQuestion);
-        io:println("\nQuestion: ", sampleQuestion.question);
-        io:println("Answer: ", coverageAnswer.answer);
-        io:println("Sources: ", coverageAnswer.sources);
+    function init() returns error? {
+        int ingestedCount = check ingestPolicyDocuments(ragDocumentsPath);
+        log:printInfo(string `Ingested ${ingestedCount} policy document(s) into the claims knowledge base.`);
+    }
+
+    resource function post questions(@http:Payload CoverageQuestion coverageQuestion) returns CoverageAnswer|http:InternalServerError {
+        CoverageAnswer|error coverageAnswer = answerCoverageQuestion(coverageQuestion);
+        if coverageAnswer is error {
+            return <http:InternalServerError>{body: {message: "Failed to answer the coverage question."}};
+        }
+        return coverageAnswer;
     }
 }
