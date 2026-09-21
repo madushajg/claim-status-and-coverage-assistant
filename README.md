@@ -1114,72 +1114,72 @@ The completed assistant should demonstrate that:
 
 ## Claims data
 
-- [ ] PostgreSQL is running locally.
-- [ ] `claims_demo` database exists.
-- [ ] Customers, policies, claims, and timeline tables are created.
-- [ ] `CLM-1001` belongs to `C-100`.
-- [ ] `CLM-1001` references `POL-1001`.
-- [ ] `POL-1001` belongs to `C-100`.
-- [ ] Timeline events are loaded and verified.
+- [x] PostgreSQL is running locally.
+- [x] `claims_demo` database exists.
+- [x] Customers, policies, claims, and timeline tables are created.
+- [x] `CLM-1001` belongs to `C-100`.
+- [x] `CLM-1001` references `POL-1001`.
+- [x] `POL-1001` belongs to `C-100`.
+- [x] Timeline events are loaded and verified.
 
 ## Claims API
 
-- [ ] `GET /claims/{claimId}` implemented.
-- [ ] `GET /claims/{claimId}/timeline` implemented.
-- [ ] `GET /customers/{customerId}/policies` implemented.
-- [ ] Test customer identity or access token supported.
-- [ ] Ownership validation implemented.
-- [ ] Consistent authorization error implemented.
-- [ ] No unauthorized data disclosure.
+- [x] `GET /claims/{claimId}` implemented.
+- [x] `GET /claims/{claimId}/timeline` implemented.
+- [x] `GET /customers/{customerId}/policies` implemented.
+- [x] Test customer identity or access token supported.
+- [x] Ownership validation implemented.
+- [x] Consistent authorization error implemented.
+- [x] No unauthorized data disclosure.
 
 ## RAG
 
-- [ ] Policy documents created as local Markdown.
-- [ ] Metadata added to documents.
-- [ ] Text data loader configured.
-- [ ] In-memory vector store configured.
-- [ ] Approved embedding provider configured.
-- [ ] Documents ingested.
-- [ ] Correct policy product and version used for retrieval.
-- [ ] Source and clause metadata returned.
-- [ ] Insufficient evidence handled correctly.
+- [x] Policy documents created as local Markdown.
+- [x] Metadata added to documents.
+- [x] Text data loader configured.
+- [x] In-memory vector store configured.
+- [x] Approved embedding provider configured.
+- [x] Documents ingested.
+- [x] Correct policy product and version used for retrieval.
+- [x] Source and clause metadata returned.
+- [x] Insufficient evidence handled correctly.
 
 ## MCP
 
-- [ ] MCP service available at `/claims-mcp`.
-- [ ] `getClaimStatus` exposed.
-- [ ] `getClaimTimeline` exposed.
-- [ ] `getCustomerPolicy` exposed.
-- [ ] `answerCoverageQuestion` exposed.
-- [ ] Tools are typed and read-only.
-- [ ] Identity propagated or validated.
-- [ ] Ownership checks enforced.
+- [x] MCP service available at `/claims-mcp`.
+- [x] `getClaimStatus` exposed.
+- [x] `getClaimTimeline` exposed.
+- [x] `getCustomerPolicy` exposed.
+- [x] `answerCoverageQuestion` exposed.
+- [x] Tools are typed and read-only.
+- [x] Identity propagated or validated.
+- [x] Ownership checks enforced.
 
 ## Agent
 
-- [ ] AI Chat Agent created.
-- [ ] Claims MCP server attached.
-- [ ] Only four read-oriented tools permitted.
-- [ ] Model provider configured.
-- [ ] Maximum iteration limit configured.
-- [ ] Read-only behavior configured.
-- [ ] API required for current claim data.
-- [ ] RAG required for policy explanations.
-- [ ] Source and clause references required.
-- [ ] Refusal behavior configured.
+- [x] AI Chat Agent created.
+- [x] Claims MCP server attached.
+- [x] Only four read-oriented tools permitted.
+- [x] Model provider configured.
+- [x] Maximum iteration limit configured.
+- [x] Read-only behavior configured.
+- [x] API required for current claim data.
+- [x] RAG required for policy explanations.
+- [x] Source and clause references required.
+- [x] Refusal behavior configured.
 
 ## Validation
 
-- [ ] Claim status test passed.
-- [ ] Claim timeline test passed.
-- [ ] Coverage question test passed.
-- [ ] Clause reference test passed.
-- [ ] Unauthorized customer test passed.
-- [ ] Write-operation refusal test passed.
-- [ ] Insufficient-evidence test passed.
-- [ ] Tracing enabled.
-- [ ] Sensitive values reviewed in traces.
-- [ ] API, MCP, RAG, and agent traces correlated.
+- [x] Claim status test passed.
+- [x] Claim timeline test passed.
+- [x] Coverage question test passed.
+- [x] Clause reference test passed.
+- [x] Unauthorized customer test passed.
+- [x] Write-operation refusal test passed.
+- [x] Insufficient-evidence test passed.
+- [x] Tracing enabled.
+- [x] Sensitive values reviewed in traces.
+- [x] API, MCP, RAG, and agent traces correlated.
 
 ## Running
 
