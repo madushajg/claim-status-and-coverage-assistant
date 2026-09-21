@@ -1,4 +1,5 @@
 import ballerina/http;
+import ballerina/otel as _;
 
 // Consistent authorization error used whenever the caller cannot be
 // authenticated, or is authenticated but does not own the requested

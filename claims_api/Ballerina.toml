@@ -7,3 +7,4 @@ title = "Claims API"
 
 [build-options]
 sticky = true
+observabilityIncluded = true

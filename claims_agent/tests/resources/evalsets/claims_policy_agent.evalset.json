@@ -1,0 +1,36 @@
+{
+  "id": "claims-policy-agent-evalset",
+  "name": "Claims Policy Agent core scenarios",
+  "description": "Covers the claim status lookup tool trajectory for the Claims Policy Agent.",
+  "threads": [
+    {
+      "id": "claim-status-lookup",
+      "description": "Customer asks for the status of their own claim; the agent must call getClaimStatusTool.",
+      "traces": [
+        {
+          "id": "claim-status-lookup-trace-1",
+          "userMessage": {
+            "role": "user",
+            "content": "What is the status of claim CLM-1001?"
+          },
+          "iterations": [],
+          "output": {
+            "role": "assistant",
+            "content": "The status of claim CLM-1001 is currently UNDER REVIEW."
+          },
+          "toolCalls": [
+            {
+              "name": "getClaimStatusTool",
+              "arguments": {
+                "claimId": "CLM-1001"
+              }
+            }
+          ],
+          "tools": [],
+          "startTime": [0, 0],
+          "endTime": [1, 0]
+        }
+      ]
+    }
+  ]
+}

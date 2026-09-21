@@ -1,5 +1,6 @@
 import ballerina/http;
 import ballerina/log;
+import ballerina/otel as _;
 
 // HTTP listener port for the Claims RAG query service.
 configurable int ragServicePort = 8081;

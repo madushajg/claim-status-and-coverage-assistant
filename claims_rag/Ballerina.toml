@@ -7,3 +7,4 @@ title = "Claims RAG"
 
 [build-options]
 sticky = true
+observabilityIncluded = true

@@ -1,10 +1,9 @@
 [package]
 org = "madusha"
-name = "claims_agent"
+name = "chat_ui"
 version = "0.1.0"
 distribution = "2201.13.6"
-title = "Claims Policy Agent"
+title = "Claims Policy Assistant Chat UI"
 
 [build-options]
 sticky = true
-observabilityIncluded = true

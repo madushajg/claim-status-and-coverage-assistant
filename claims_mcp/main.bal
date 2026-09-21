@@ -1,4 +1,5 @@
 import ballerina/mcp;
+import ballerina/otel as _;
 
 listener mcp:StreamableHttpListener mcpListener = check new (mcpServicePort);
 

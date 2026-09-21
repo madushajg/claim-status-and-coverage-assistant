@@ -1,5 +1,6 @@
 import ballerina/ai;
 import ballerina/http;
+import ballerina/otel as _;
 
 listener ai:Listener claimsPolicyAgentListener = new (listenOn = check http:getDefaultListener());
 
@@ -31,7 +32,19 @@ service /claims\-policy\-agent on new http:Listener(secureChatServicePort) {
         ai:Context context = new;
         context.set(CUSTOMER_ID_CONTEXT_KEY, customerId);
 
-        string stringResult = check claimsPolicyAgent.run(request.message, request.sessionId, context);
+        // Bind the agent's session identifier to the verified customer id,
+        // not the raw client-supplied sessionId. The agent runtime keys its
+        // conversation memory purely by this session identifier, so if a
+        // sessionId string were ever reused across two different verified
+        // identities, the second caller could get back a memoized answer
+        // that was actually produced for the first caller's identity -
+        // leaking data across customers. A sessionId is only ever
+        // meaningful within one identity, so folding the customerId into it
+        // puts each identity's sessions in a disjoint namespace and makes
+        // that cross-identity collision impossible.
+        string boundSessionId = string `${customerId}:${request.sessionId}`;
+
+        string stringResult = check claimsPolicyAgent.run(request.message, boundSessionId, context);
         return {message: stringResult};
     }
 }

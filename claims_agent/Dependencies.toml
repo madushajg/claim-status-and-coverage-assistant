@@ -45,6 +45,21 @@ modules = [
 
 [[package]]
 org = "ballerina"
+name = "ai.eval"
+version = "0.9.0"
+scope = "testOnly"
+dependencies = [
+	{org = "ballerina", name = "ai"},
+	{org = "ballerina", name = "test"},
+	{org = "ballerina", name = "time"},
+	{org = "ballerina", name = "uuid"}
+]
+modules = [
+	{org = "ballerina", packageName = "ai.eval", moduleName = "ai.eval"}
+]
+
+[[package]]
+org = "ballerina"
 name = "auth"
 version = "2.14.0"
 dependencies = [
@@ -202,6 +217,15 @@ dependencies = [
 
 [[package]]
 org = "ballerina"
+name = "lang.error"
+version = "0.0.0"
+scope = "testOnly"
+dependencies = [
+	{org = "ballerina", name = "jballerina.java"}
+]
+
+[[package]]
+org = "ballerina"
 name = "lang.int"
 version = "0.0.0"
 dependencies = [
@@ -321,6 +345,21 @@ dependencies = [
 
 [[package]]
 org = "ballerina"
+name = "otel"
+version = "0.9.0"
+dependencies = [
+	{org = "ballerina", name = "io"},
+	{org = "ballerina", name = "jballerina.java"},
+	{org = "ballerina", name = "log"},
+	{org = "ballerina", name = "observe"},
+	{org = "ballerina", name = "task"}
+]
+modules = [
+	{org = "ballerina", packageName = "otel", moduleName = "otel"}
+]
+
+[[package]]
+org = "ballerina"
 name = "random"
 version = "1.7.0"
 dependencies = [
@@ -336,6 +375,20 @@ dependencies = [
 	{org = "ballerina", name = "jballerina.java"},
 	{org = "ballerina", name = "time"},
 	{org = "ballerina", name = "uuid"}
+]
+
+[[package]]
+org = "ballerina"
+name = "test"
+version = "0.0.0"
+scope = "testOnly"
+dependencies = [
+	{org = "ballerina", name = "jballerina.java"},
+	{org = "ballerina", name = "lang.array"},
+	{org = "ballerina", name = "lang.error"}
+]
+modules = [
+	{org = "ballerina", packageName = "test", moduleName = "test"}
 ]
 
 [[package]]
@@ -378,13 +431,29 @@ dependencies = [
 ]
 
 [[package]]
+org = "ballerinai"
+name = "observe"
+version = "0.0.0"
+dependencies = [
+	{org = "ballerina", name = "jballerina.java"},
+	{org = "ballerina", name = "observe"}
+]
+modules = [
+	{org = "ballerinai", packageName = "observe", moduleName = "observe"}
+]
+
+[[package]]
 org = "madusha"
 name = "claims_agent"
 version = "0.1.0"
 dependencies = [
 	{org = "ballerina", name = "ai"},
+	{org = "ballerina", name = "ai.eval"},
 	{org = "ballerina", name = "http"},
-	{org = "ballerina", name = "mcp"}
+	{org = "ballerina", name = "mcp"},
+	{org = "ballerina", name = "otel"},
+	{org = "ballerina", name = "test"},
+	{org = "ballerinai", name = "observe"}
 ]
 modules = [
 	{org = "madusha", packageName = "claims_agent", moduleName = "claims_agent"}

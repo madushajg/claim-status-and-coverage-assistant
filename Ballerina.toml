@@ -1,3 +1,3 @@
 [workspace]
 title = "Testing Hackathon 0917"
-packages = ["claims_api", "claims_rag", "claims_mcp", "claims_agent"]
+packages = ["claims_api", "claims_rag", "claims_mcp", "claims_agent", "chat_ui"]
