@@ -898,6 +898,204 @@ If the knowledge base does not contain sufficient evidence:
 - Do not invent a coverage decision.
 - Do not claim that the damage is covered or excluded without evidence.
 
+# Running and trying out the assistant
+
+## Goal
+
+Run all four integrations together, plus a small browser-based chat UI, so
+the full scenario can be exercised end to end without hand-crafting HTTP
+requests.
+
+## Components
+
+| Component | Port | Purpose |
+|---|---|---|
+| Claims API | `8080` | Read-only claims/policy HTTP resources (Step 2) |
+| Claims RAG | `8081` | Coverage-question query service (Step 5) |
+| Claims MCP | `8090` | MCP tools at `/claims-mcp` (Step 6) |
+| Claims Policy Agent | `8091` | Authenticated chat entry point at `/claims-policy-agent/secure-chat` (Step 7/8) |
+| Chat UI | `8092` | Browser chat page, relays to the agent's secure-chat endpoint |
+
+## `start.sh` / `stop.sh`
+
+Two shell scripts at the project root start and stop all five integrations
+together, in dependency order (`claims_api` → `claims_rag` → `claims_mcp` →
+`claims_agent` → `chat_ui`). Each runs as a background `bal run` process,
+logging to `logs/<package>.log` and recording its PID under `.pids/`.
+
+Create `start.sh`:
+
+```bash
+#!/usr/bin/env bash
+# Starts all four Claims Policy Assistant integrations in the correct
+# dependency order (claims_api -> claims_rag -> claims_mcp -> claims_agent),
+# plus the chat_ui, each as a background `bal run` process, logging to
+# logs/<package>.log.
+#
+# Usage:
+#   ./start.sh
+#
+# Stop everything with ./stop.sh.
+
+set -uo pipefail
+
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+cd "$SCRIPT_DIR"
+
+PACKAGES=(claims_api claims_rag claims_mcp claims_agent chat_ui)
+LOG_DIR="$SCRIPT_DIR/logs"
+PID_DIR="$SCRIPT_DIR/.pids"
+
+mkdir -p "$LOG_DIR" "$PID_DIR"
+
+wait_for_port() {
+    local port="$1"
+    local label="$2"
+    local attempts=60
+    while ! (exec 3<>"/dev/tcp/localhost/$port") 2>/dev/null; do
+        attempts=$((attempts - 1))
+        if [ "$attempts" -le 0 ]; then
+            echo "  WARNING: $label did not start listening on port $port in time. Check logs/$label.log"
+            return 1
+        fi
+        sleep 1
+    done
+    exec 3<&- 2>/dev/null || true
+    exec 3>&- 2>/dev/null || true
+    echo "  $label is listening on port $port."
+    return 0
+}
+
+echo "Starting Claims Policy Assistant integrations..."
+
+for package in "${PACKAGES[@]}"; do
+    echo ""
+    echo "==> Starting $package"
+    (cd "$package" && nohup bal run > "$LOG_DIR/$package.log" 2>&1 &
+     echo $! > "$PID_DIR/$package.pid")
+    sleep 1
+done
+
+echo ""
+echo "Waiting for services to become ready..."
+wait_for_port 8080 claims_api
+wait_for_port 8081 claims_rag
+wait_for_port 8090 claims_mcp
+wait_for_port 8091 claims_agent
+wait_for_port 8092 chat_ui
+
+echo ""
+echo "All integrations started. Logs are in $LOG_DIR/, PIDs in $PID_DIR/."
+echo "  Claims API          -> http://localhost:8080"
+echo "  Claims RAG          -> http://localhost:8081"
+echo "  Claims MCP          -> http://localhost:8090/claims-mcp"
+echo "  Claims Policy Agent -> http://localhost:8091/claims-policy-agent/secure-chat"
+echo "  Chat UI             -> http://localhost:8092"
+echo ""
+echo "Tail all logs with: tail -f logs/*.log"
+echo "Stop everything with: ./stop.sh"
+```
+
+Create `stop.sh`:
+
+```bash
+#!/usr/bin/env bash
+# Stops all integrations started by start.sh, using the PIDs recorded
+# under .pids/. Falls back to matching `bal run` processes by working
+# directory if a PID file is missing or stale.
+
+set -uo pipefail
+
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+cd "$SCRIPT_DIR"
+
+PACKAGES=(claims_api claims_rag claims_mcp claims_agent chat_ui)
+PID_DIR="$SCRIPT_DIR/.pids"
+
+echo "Stopping Claims Policy Assistant integrations..."
+
+for package in "${PACKAGES[@]}"; do
+    pid_file="$PID_DIR/$package.pid"
+    if [ -f "$pid_file" ]; then
+        pid="$(cat "$pid_file")"
+        if kill -0 "$pid" 2>/dev/null; then
+            echo "==> Stopping $package (pid $pid)"
+            kill "$pid" 2>/dev/null
+            sleep 1
+            kill -9 "$pid" 2>/dev/null || true
+        else
+            echo "==> $package (pid $pid) was not running"
+        fi
+        rm -f "$pid_file"
+    else
+        echo "==> No PID file for $package, skipping"
+    fi
+done
+
+echo ""
+echo "Done. Any lingering bal/java processes can be found with: ps aux | grep bal"
+```
+
+Make both scripts executable once:
+
+```bash
+chmod +x start.sh stop.sh
+```
+
+Usage:
+
+```bash
+./start.sh   # starts all five integrations in order and waits for each port
+./stop.sh    # stops everything started by start.sh
+```
+
+## Secure chat UI
+
+`chat_ui` is a small Ballerina HTTP service (port `8092`) that serves a
+single-page browser chat client and relays each message to the Claims
+Policy Agent's authenticated `/claims-policy-agent/secure-chat` endpoint
+(Step 8).
+
+The browser never calls the agent directly. It only talks to `chat_ui`,
+same-origin, which avoids needing any CORS configuration:
+
+```text
+Browser
+   |
+   v
+Chat UI (/chat)             <- same-origin, no CORS needed
+   |
+   v  Authorization: Bearer <customerId>
+Claims Policy Agent (/claims-policy-agent/secure-chat)
+```
+
+The page has two inputs:
+
+- **Customer id** — the test identity to authenticate as (e.g. `C-100` or
+  `C-200`). `chat_ui` converts this into the test-only
+  `Authorization: Bearer <customerId>` header server-side before relaying
+  the request, so the browser itself never sends an Authorization header.
+- **Message** — the question to ask the assistant.
+
+To try it:
+
+1. Start all integrations with `./start.sh` (or run each package
+   individually).
+2. Open `http://localhost:8092` in a browser.
+3. Enter customer id `C-100` and ask `What is the status of claim CLM-1001?`.
+   The assistant should return the live claim status.
+4. Change the customer id to `C-200` and ask the same question. The
+   assistant should refuse with the consistent authorization error, since
+   `CLM-1001` belongs to `C-100` (Test 5 in Step 10).
+
+**Session identity binding:** each browser tab keeps one random session id
+for its lifetime, sent alongside every message. Because the agent's
+conversation memory is keyed by session id, `claims_agent` binds that
+session id to the verified customer id internally
+(`"<customerId>:<sessionId>"`) before calling the agent, so two different
+verified identities can never collide on the same underlying agent session
+even if the same session id string were ever reused across them.
+
 # Expected outcomes
 
 The completed assistant should demonstrate that:
@@ -982,6 +1180,14 @@ The completed assistant should demonstrate that:
 - [ ] Tracing enabled.
 - [ ] Sensitive values reviewed in traces.
 - [ ] API, MCP, RAG, and agent traces correlated.
+
+## Running
+
+- [ ] `start.sh` starts all five integrations in dependency order.
+- [ ] `stop.sh` stops all integrations started by `start.sh`.
+- [ ] Chat UI available at `http://localhost:8092`.
+- [ ] Chat UI relays to the agent's secure-chat endpoint without exposing it to the browser.
+- [ ] Switching customer id in the chat UI correctly changes the authenticated identity.
 
 # Notes
 
